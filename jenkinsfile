@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Clone the Git repository
+                checkout([$class: 'GitSCM', 
+                          branches: [[name: '*/master']], 
+                          doGenerateSubmoduleConfigurations: false, 
+                          extensions: [], 
+                          submoduleCfg: [], 
+                          userRemoteConfigs: [[url: 'https://github.com/Frawatson/dashboard-app.git']]])
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                // Build the Docker image using the Dockerfile
+                sh 'docker build -t Dashboard .'
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                // Push the Docker image to a container registry (replace <CONTAINER_REGISTRY> with your registry details)
+                sh 'docker tag Dashboard <frawatson>/Dashboard:latest'
+                sh 'docker push <frawatson>/Dashboard:latest'
+            }
+        }
+    }
+
+    post {
+        always {
+            // Clean up workspace after the pipeline execution
+            cleanWs()
+        }
+    }
+}

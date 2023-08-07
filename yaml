@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: Dashboard
+spec:
+  replicas: 3  # Change this as needed
+  selector:
+    matchLabels:
+      app: Dashboard
+  template:
+    metadata:
+      labels:
+        app: Dashboard
+    spec:
+      containers:
+        - name: Dashboard
+          image: frawatson/Dashboard:latest  # Replace <CONTAINER_REGISTRY> with your registry details
+          ports:
+            - containerPort: 90
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: Dashboard-service
+spec:
+  selector:
+    app: Dashboard
+  ports:
+    - protocol: TCP
+      port: 90
+      targetPort: 90
+  type: NodePort  # Use "LoadBalancer" for cloud providers like AWS or GCP; use "NodePort" for local Kubernetes clusters
