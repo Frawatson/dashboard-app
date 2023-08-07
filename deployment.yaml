@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: Dashboard
-          image: frawatson/Dashboard:latest  # Replace <CONTAINER_REGISTRY> with your registry details
+          image: frawatson/dashboard:latest  # Replace <CONTAINER_REGISTRY> with your registry details
           ports:
             - containerPort: 90
 
