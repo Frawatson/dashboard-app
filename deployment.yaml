@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: Dashboard
+  name: dashboard
 spec:
   replicas: 3  # Change this as needed
   selector:
     matchLabels:
-      app: Dashboard
+      app: dashboard
   template:
     metadata:
       labels:
-        app: Dashboard
+        app: dashboard
     spec:
       serviceAccountName: jenkins
       containers:
-        - name: Dashboard
+        - name: dashboard
           image: frawatson/dashboard:latest  # Replace <CONTAINER_REGISTRY> with your registry details
           ports:
             - containerPort: 90
@@ -23,10 +23,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: Dashboard-service
+  name: dashboard-service
 spec:
   selector:
-    app: Dashboard
+    app: dashboard
   ports:
     - protocol: TCP
       port: 90
