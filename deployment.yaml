@@ -12,6 +12,7 @@ spec:
       labels:
         app: Dashboard
     spec:
+      serviceAccountName: jenkins
       containers:
         - name: Dashboard
           image: frawatson/dashboard:latest  # Replace <CONTAINER_REGISTRY> with your registry details
