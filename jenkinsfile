@@ -1,5 +1,10 @@
 pipeline {
     agent any
+    
+    environment {	
+		DOCKERHUB_CREDENTIALS=credentials('Dockerhublogin')
+		KUBERNETES_CREDENTIALS=credentials('kubeconfig')
+	}
 
     stages {
         stage('Checkout') {
@@ -17,23 +22,17 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 // Build the Docker image using the Dockerfile
-                sh 'docker build -t Dashboard .'
+                sh 'docker build -t dashboard .'
             }
         }
 
         stage('Push Docker Image') {
             steps {
                 // Push the Docker image to a container registry (replace <CONTAINER_REGISTRY> with your registry details)
-                sh 'docker tag Dashboard <frawatson>/Dashboard:latest'
-                sh 'docker push <frawatson>/Dashboard:latest'
+                sh 'docker tag dashboard frawatson/dashboard:latest'
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh 'docker push frawatson/dashboard:latest'
             }
-        }
-    }
-
-    post {
-        always {
-            // Clean up workspace after the pipeline execution
-            cleanWs()
         }
     }
 }
